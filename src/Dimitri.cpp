@@ -9,14 +9,14 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   // Builds right arm
   this->rightArm = new JointChain();
   this->rightArm->addJoint(new ElasticJoint(1, 101, 1860, 2646));
-  this->rightArm->addJoint(new ElasticJoint(2, 102, 860, 2748));
+  this->rightArm->addJoint(new ElasticJoint(2, 102, 5061-4096, 5770));
   this->rightArm->addJoint(new ElasticJoint(3, 103, 1340, 4584));
   this->rightArm->addJoint(new ElasticJoint(4, 104, 2216, 4454));
 
   // Builds left arm
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new Joint(8, 4096-1670));
-  this->leftArm->addJoint(new ElasticJoint(7, 107, 4096-2667, 63172));
+  this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
   this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 58371));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
 

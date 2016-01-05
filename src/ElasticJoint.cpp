@@ -16,25 +16,64 @@ ElasticJoint::~ElasticJoint()
   delete this->pidController;
 }
 
+void ElasticJoint::readAngle()
+{
+  // Read current motor angle
+  int value = dxl_read_word(this->jointId, 36);
+  if (dxl_get_result() == 1)
+  {
+    this->motorAngle = VALUE2ANGLE(value - this->jointCenterValue);
+  }
+
+  // Read the current angle of the spring
+  this->readSpringAngle();
+
+  // Stores resulting angle 
+  this->angle = this->motorAngle + this->springAngle;
+
+}
+
+
+void ElasticJoint::readSpringAngle()
+{
+  int value = dxl_read_word(this->springId, 36);
+  if (dxl_get_result() == 1)
+  {
+    this->springAngle = SPRINGVALUE2ANGLE(value - this->springCenterValue);
+    // Stores the resulting torque
+    this->torque = SPRINGANGLE2TORQUE(this->springAngle);
+  }
+}
+
 void ElasticJoint::update()
 {
+
   // Read the current angle of the motor
-  int value1 = (dxl_read_word(this->jointId, 36)-this->jointCenterValue);
-  float motorAngle = VALUE2ANGLE(value1);
-  int result1 = dxl_get_result();
-  // Read the current angle of the spring
-  int value2 = (dxl_read_word(this->springId, 36)-this->springCenterValue);
-  float springAngle = SPRINGVALUE2ANGLE(value2);
-  int result2 = dxl_get_result();
-  if (result1 == 1 && result2 == 1)
+  this->readAngle();
+
+  // Behave accordingly to respective control mode
+  switch (this->controlMode)
   {
-    // Stores the resulting torque
-    this->torque = SPRINGANGLE2TORQUE(springAngle);
-    // Stores resulting angle 
-    this->angle = motorAngle + springAngle;
-    // Write the goal angle to the motor
-    dxl_write_word(this->jointId, 30,
-          this->jointCenterValue + ANGLE2VALUE(this->goalAngle - springAngle));
+    case ANGLE:
+      {
+        // Write the goal angle to the motor
+        this->writeGoalAngle(this->goalAngle - this->springAngle);
+      }
+      break;
+    case TEACH:
+      {
+
+        // Will only change the goal angle if enough torque is
+        // applied to the motors
+        if (fabs(this->torque) > TORQUE_TEACH_THRESHOLD)
+        {
+          this->goalAngle = this->angle;
+        }
+
+        // Write the goal angle to the motor
+        this->writeGoalAngle(this->goalAngle);
+      }
+      break;
   }
 }
 

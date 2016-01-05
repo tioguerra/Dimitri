@@ -21,17 +21,38 @@ Joint::~Joint()
 
 void Joint::setControlMode(int mode)
 {
+
   switch (mode)
   {
+
     case ANGLE:
     case TORQUE:
-      // Enable torque to the motors
-      dxl_write_byte(this->jointId, 0x18, 1);
+      {
+
+        // Read current position of the servo
+        this->readMotorAngle();
+
+        // Sets the current position as the goal
+        this->goalAngle = this->motorAngle;
+
+        // Writes that angle to the servo
+        this->writeGoalAngle(this->goalAngle);
+
+        // Enable torque to the motors
+        dxl_write_byte(this->jointId, 0x18, 1);
+
+      }
       break;
+
     case OFF:
-      // Disable torque to the motors
-      dxl_write_byte(this->jointId, 0x18, 0);
+      {
+
+        // Disable torque to the motors
+        dxl_write_byte(this->jointId, 0x18, 0);
+
+      }
       break;
+
   }
   this->controlMode = mode;
 }
@@ -86,24 +107,63 @@ float Joint::getGoalAngle()
   return goalAngle;
 }
 
+void Joint::readAngle()
+{
+  this->readMotorAngle();
+  this->angle = this->motorAngle;
+}
+
+void Joint::readMotorAngle()
+{
+  int value = dxl_read_word(this->jointId, 36);
+  if (dxl_get_result() == 1)
+  {
+    this->motorAngle = VALUE2ANGLE(value - this->jointCenterValue);
+  }
+}
+
+void Joint::writeGoalAngle(float angle)
+{
+  dxl_write_word(this->jointId, 30, this->jointCenterValue + ANGLE2VALUE(angle));
+}
 
 void Joint::update()
 {
   // Read the current angle of the motor
-  int value = dxl_read_word(this->jointId, 36);
-  if (dxl_get_result() == 1)
-  {
-    this->angle = VALUE2ANGLE(value - this->jointCenterValue);
-  }
+  this->readAngle();
 
+  // Behave accordingly to respective control mode
   switch (this->controlMode)
   {
     case ANGLE:
-      // Write the goal angle to the motor
-      dxl_write_word(this->jointId, 30, this->jointCenterValue + ANGLE2VALUE(this->goalAngle));
-      break;
+      {
+
+        // Write the goal angle to the motor
+        this->writeGoalAngle(this->goalAngle);
+        break;
+
+      }
+    case TEACH:
+      {
+        
+        // Will only change the goal angle if the difference
+        // between the current angle and the current goal
+        // angle is large enough
+        float difference = this->angle - this->goalAngle;
+        if (fabs(difference) > ANGLE_TEACH_THRESHOLD)
+        {
+          this->goalAngle = this->angle;
+          printf("Angle displacement detected!\n");
+        }
+
+        // Write the goal angle to the motor
+        this->writeGoalAngle(this->goalAngle);
+
+      }
     default:
-      break;
+      {
+        break;
+      }
   }
 }
 

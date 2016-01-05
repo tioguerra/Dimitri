@@ -8,7 +8,7 @@
 #define KI 0
 #define KD 0
 
-#define SPRING_CONSTANT 32.0
+#define SPRING_CONSTANT 1.0
 #define SPRINGANGLE2VALUE(x) ((x)*4096.0/M_PI)
 #define SPRINGVALUE2ANGLE(x) ((x)*M_PI/4096.0)
 #define SPRINGANGLE2TORQUE(x) (SPRING_CONSTANT*(x))
@@ -21,9 +21,12 @@ class ElasticJoint : public Joint
 
     int springId;
     int springCenterValue;
+    float springAngle;
     float torque;
     float goalTorque;
     PidController *pidController;
+    virtual void readAngle();
+    void readSpringAngle();
 
   public:
 
