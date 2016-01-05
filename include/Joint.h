@@ -9,9 +9,10 @@
 
 typedef enum
 {
-  ANGLE,
-  TORQUE,
-  OFF
+  ANGLE,  // Use this mode for position control
+  TORQUE, // Use this mode for torque control
+  OFF,    // Use this mode to turn off the torque
+  TEACH,  // Use this mode to teach poses to the robot
 } ControlMode;
 
 class Joint
