@@ -48,6 +48,27 @@ class Dimitri
      * This method sets the maximum torque to all motors
      */
     void setMaxTorque(int torque);
+
+    /*
+     * This method sets a pose to the robot
+     */
+    void setPose(float lroll, float lpitch, float lyaw, float lelbow,
+                 float rroll, float rpitch, float ryaw, float relbow,
+                 float wroll, float wpitch, float wyaw,
+                 float hpan, float htilt);
+
+    void setPose(float *pose);
+
+    /*
+     * This method gets a pose from the robot
+     */
+    void getPose(float **pose);
+
+    void getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
+                 float &rroll, float &rpitch, float &ryaw, float &relbow,
+                 float &wroll, float &wpitch, float &wyaw,
+                 float &hpan, float &htilt);
+
 };
 
 #endif 

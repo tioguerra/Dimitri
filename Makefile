@@ -10,7 +10,7 @@ OBJECTS = obj/Dimitri.o obj/Joint.o obj/ElasticJoint.o \
 
 all: lib/libdxl.a bin/dynamixel_test bin/dimitri_print \
   bin/dimitri_stance bin/dimitri_off bin/dimitri_on \
-  bin/dimitri_zero bin/dimitri_teach
+  bin/dimitri_zero bin/dimitri_teach bin/dimitri_poses
 
 lib/libdxl.a: obj/dxl_hal.o obj/dynamixel.o
 	$(AR) rs $@ $^
@@ -34,6 +34,9 @@ bin/dimitri_zero: obj/dimitri_zero.o $(OBJECTS) lib/libdxl.a
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
 bin/dimitri_teach: obj/dimitri_teach.o $(OBJECTS) lib/libdxl.a
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+bin/dimitri_poses: obj/dimitri_poses.o $(OBJECTS) lib/libdxl.a
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
 obj/%.o: src/%.cpp

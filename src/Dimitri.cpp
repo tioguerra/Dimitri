@@ -1,6 +1,22 @@
 #include "Dimitri.h"
 #include "dynamixel.h"
 
+enum DimitriJoints {
+  RELBOW,
+  RYAW,
+  RROLL,
+  RPITCH,
+  LPITCH,
+  LROLL,
+  LYAW,
+  LELBOW,
+  HTILT,
+  HPAN,
+  WYAW,
+  WROLL,
+  WPITCH
+};
+
 Dimitri::Dimitri(int deviceIndex, int baudnum)
 {
   // Initialize the communications channel
@@ -86,5 +102,143 @@ void Dimitri::setMaxTorque(int torque)
   this->rightArm->setMaxTorque(torque);
   this->head->setMaxTorque(torque);
   this->waist->setMaxTorque(torque);
+}
+
+void Dimitri::setPose(float lroll, float lpitch, float lyaw, float lelbow,
+         float rroll, float rpitch, float ryaw, float relbow,
+         float wroll, float wpitch, float wyaw,
+         float hpan, float htilt)
+{
+  this->leftArm->getJoint(ARMROLL)->setGoalAngle(lroll);
+  this->leftArm->getJoint(ARMPITCH)->setGoalAngle(lpitch);
+  this->leftArm->getJoint(ARMYAW)->setGoalAngle(lyaw);
+  this->leftArm->getJoint(ELBOW)->setGoalAngle(lelbow);
+  this->rightArm->getJoint(ARMROLL)->setGoalAngle(rroll);
+  this->rightArm->getJoint(ARMPITCH)->setGoalAngle(rpitch);
+  this->rightArm->getJoint(ARMYAW)->setGoalAngle(ryaw);
+  this->rightArm->getJoint(ELBOW)->setGoalAngle(relbow);
+  this->waist->getJoint(WAISTROLL)->setGoalAngle(wroll);
+  this->waist->getJoint(WAISTPITCH)->setGoalAngle(wpitch);
+  this->waist->getJoint(WAISTYAW)->setGoalAngle(wyaw);
+  this->head->getJoint(PAN)->setGoalAngle(hpan);
+  this->head->getJoint(TILT)->setGoalAngle(htilt);
+}
+
+void Dimitri::setPose(float *pose)
+{
+  for (int i = 0 ; i < 21 ; i++)
+  {
+    switch (i)
+    {
+      case LROLL:
+        this->leftArm->getJoint(ARMROLL)->setGoalAngle(pose[i]);
+        break;
+      case LPITCH:
+        this->leftArm->getJoint(ARMPITCH)->setGoalAngle(pose[i]);
+        break;
+      case LYAW:
+        this->leftArm->getJoint(ARMYAW)->setGoalAngle(pose[i]);
+        break;
+      case LELBOW:
+        this->leftArm->getJoint(ELBOW)->setGoalAngle(pose[i]);
+        break;
+      case RROLL:
+        this->rightArm->getJoint(ARMROLL)->setGoalAngle(pose[i]);
+        break;
+      case RPITCH:
+        this->rightArm->getJoint(ARMPITCH)->setGoalAngle(pose[i]);
+        break;
+      case RYAW:
+        this->rightArm->getJoint(ARMYAW)->setGoalAngle(pose[i]);
+        break;
+      case RELBOW:
+        this->rightArm->getJoint(ELBOW)->setGoalAngle(pose[i]);
+        break;
+      case WROLL:
+        this->waist->getJoint(WAISTROLL)->setGoalAngle(pose[i]);
+        break;
+      case WPITCH:
+        this->waist->getJoint(WAISTPITCH)->setGoalAngle(pose[i]);
+        break;
+      case WYAW:
+        this->waist->getJoint(WAISTYAW)->setGoalAngle(pose[i]);
+        break;
+      case HPAN:
+        this->head->getJoint(PAN)->setGoalAngle(pose[i]);
+        break;
+      case HTILT:
+        this->head->getJoint(TILT)->setGoalAngle(pose[i]);
+        break;
+    }
+  }
+}
+
+void Dimitri::getPose(float **pose)
+{
+  for (int i = 0 ; i < 21 ; i++)
+  {
+    switch (i)
+    {
+      case LROLL:
+        *pose[i] = this->leftArm->getJoint(ARMROLL)->getGoalAngle();
+        break;
+      case LPITCH:
+        *pose[i] = this->leftArm->getJoint(ARMPITCH)->getGoalAngle();
+        break;
+      case LYAW:
+        *pose[i] = this->leftArm->getJoint(ARMYAW)->getGoalAngle();
+        break;
+      case LELBOW:
+        *pose[i] = this->leftArm->getJoint(ELBOW)->getGoalAngle();
+        break;
+      case RROLL:
+        *pose[i] = this->rightArm->getJoint(ARMROLL)->getGoalAngle();
+        break;
+      case RPITCH:
+        *pose[i] = this->rightArm->getJoint(ARMPITCH)->getGoalAngle();
+        break;
+      case RYAW:
+        *pose[i] = this->rightArm->getJoint(ARMYAW)->getGoalAngle();
+        break;
+      case RELBOW:
+        *pose[i] = this->rightArm->getJoint(ELBOW)->getGoalAngle();
+        break;
+      case WROLL:
+        *pose[i] = this->waist->getJoint(WAISTROLL)->getGoalAngle();
+        break;
+      case WPITCH:
+        *pose[i] = this->waist->getJoint(WAISTPITCH)->getGoalAngle();
+        break;
+      case WYAW:
+        *pose[i] = this->waist->getJoint(WAISTYAW)->getGoalAngle();
+        break;
+      case HPAN:
+        *pose[i] = this->head->getJoint(PAN)->getGoalAngle();
+        break;
+      case HTILT:
+        *pose[i] = this->head->getJoint(TILT)->getGoalAngle();
+        break;
+    }
+  }
+}
+
+void Dimitri::getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
+                 float &rroll, float &rpitch, float &ryaw, float &relbow,
+                 float &wroll, float &wpitch, float &wyaw,
+                 float &hpan, float &htilt)
+{
+  lroll = this->leftArm->getJoint(ARMROLL)->getGoalAngle();
+  lpitch = this->leftArm->getJoint(ARMPITCH)->getGoalAngle();
+  lyaw = this->leftArm->getJoint(ARMYAW)->getGoalAngle();
+  lelbow = this->leftArm->getJoint(ELBOW)->getGoalAngle();
+  rroll = this->rightArm->getJoint(ARMROLL)->getGoalAngle();
+  rpitch = this->rightArm->getJoint(ARMPITCH)->getGoalAngle();
+  ryaw = this->rightArm->getJoint(ARMYAW)->getGoalAngle();
+  relbow = this->rightArm->getJoint(ELBOW)->getGoalAngle();
+  wroll = this->waist->getJoint(WAISTROLL)->getGoalAngle();
+  wpitch = this->waist->getJoint(WAISTPITCH)->getGoalAngle();
+  wyaw = this->waist->getJoint(WAISTYAW)->getGoalAngle();
+  hpan = this->head->getJoint(PAN)->getGoalAngle();
+  htilt = this->head->getJoint(TILT)->getGoalAngle();
 }
 

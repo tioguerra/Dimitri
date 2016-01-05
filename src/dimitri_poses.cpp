@@ -42,7 +42,9 @@ int main(int argc, char *argv[])
   while (true)
   {
     // Sets goal positions
-    robot.setPose(0,0,0,0,0,0,0,0,0,0,0,0,0);
+    robot.setPose(DEG2RAD(-60),DEG2RAD(60),0,DEG2RAD(-90),
+                  DEG2RAD(-60),DEG2RAD(60),0,DEG2RAD(-90),
+                  0,0,0,0,0);
 
     // Performs update
     robot.update();
