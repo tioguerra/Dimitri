@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
   signal(SIGINT, signal_callback_handler);
 
-  if (dxl_initialize(0,16) == 0)
+  if (dxl_initialize(0,3) == 0)
   {
     printf( "Failed to open USB2Dynamixel!\n" );
     return -1;
@@ -29,16 +29,16 @@ int main(int argc, char *argv[])
       {
         int pos_spring = dxl_read_word( 0x64 + i, 0x24 );
         int result_spring = dxl_get_result();
-        if (result_spring != 1) continue;
+        if (result_spring != 1) pos_spring = -1;
         int pos = dxl_read_word( i, 0x24 );
         int result = dxl_get_result();
-        if (result != 1) continue;
+        if (result != 1) pos = -1;
         printf("%d:%d,%d:%d,",
                 i, pos, 0x64+i, pos_spring);
       } else {
         int pos = dxl_read_word( i, 0x24 );
         int result = dxl_get_result();
-        if (result != 1) continue;
+        if (result != 1) pos = -1;
         printf("%d:%d,", i, pos);
       }
     }

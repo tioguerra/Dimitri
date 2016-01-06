@@ -39,7 +39,7 @@ void ElasticJoint::readSpringAngle()
   int value = dxl_read_word(this->springId, 36);
   if (dxl_get_result() == 1)
   {
-    this->springAngle = SPRINGVALUE2ANGLE(value - this->springCenterValue);
+    this->springAngle = (0.8)*this->springAngle + (0.2)*SPRINGVALUE2ANGLE(value - this->springCenterValue);
     // Stores the resulting torque
     this->torque = SPRINGANGLE2TORQUE(this->springAngle);
   }

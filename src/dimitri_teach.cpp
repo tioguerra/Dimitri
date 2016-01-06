@@ -5,9 +5,6 @@
 #include <cstdio>
 #include <dynamixel.h>
 
-#define RAD2DEG(x) ((x)*180.0/M_PI)
-#define DEG2RAD(x) ((x)*M_PI/180.0)
-
 void signal_callback_handler(int signum)
 {
   printf("Caught signal %d\n", signum);
@@ -21,8 +18,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 115200bps
-  Dimitri robot(0, 16);
+  // to /dev/ttyUSB0 with 500000bps
+  Dimitri robot(0, 3);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
@@ -36,35 +33,24 @@ int main(int argc, char *argv[])
   // teaching control mode
   robot.setControlMode(TEACH);
 
+  // This array stores the pose angles
+  float pose[13];
+
   // Main loop
   while (true)
   {
     // Performs update
     robot.update();
 
-    // Gets the angle values for the left arm
-    float lroll = RAD2DEG(robot.getLeftArm()->getJoint(ARMROLL)->getAngle());
-    float lpitch = RAD2DEG(robot.getLeftArm()->getJoint(ARMPITCH)->getAngle());
-    float lyaw = RAD2DEG(robot.getLeftArm()->getJoint(ARMYAW)->getAngle());
-    float lelbow = RAD2DEG(robot.getLeftArm()->getJoint(ELBOW)->getAngle());
+    // Gets the pose angles
+    robot.getPose( pose );
 
-    // Gets the angle values for the right arm
-    float rroll = RAD2DEG(robot.getRightArm()->getJoint(ARMROLL)->getAngle());
-    float rpitch = RAD2DEG(robot.getRightArm()->getJoint(ARMPITCH)->getAngle());
-    float ryaw = RAD2DEG(robot.getRightArm()->getJoint(ARMYAW)->getAngle());
-    float relbow = RAD2DEG(robot.getRightArm()->getJoint(ELBOW)->getAngle());
-    
-    // Gets the angle values for the head
-    float hpan = RAD2DEG(robot.getHead()->getJoint(PAN)->getAngle());
-    float htilt = RAD2DEG(robot.getHead()->getJoint(TILT)->getAngle());
-    
-    // Gets the angle values for the waist
-    float wroll = RAD2DEG(robot.getWaist()->getJoint(WAISTROLL)->getAngle());
-    float wpitch = RAD2DEG(robot.getWaist()->getJoint(WAISTPITCH)->getAngle());
-    float wyaw = RAD2DEG(robot.getWaist()->getJoint(WAISTYAW)->getAngle());
-
-    printf("%+04.0f,%+04.0f,%+04.0f,%+04.0f|%+04.0f,%+04.0f,%+04.0f,%+04.0f|%+04.0f,%+04.0f|%+04.0f,%+04.0f,%+04.0f\n",
-        lroll,lpitch,lyaw,lelbow,rroll,rpitch,ryaw,relbow,hpan,htilt,wroll,wpitch,wyaw);
+    // Print the pose angles 
+    for (int i = 0 ; i < 13 ; i++)
+    {
+      printf("%+04.0f,", RAD2DEG(pose[i]));
+    }
+    printf("\n");
   }
 
   return 0;

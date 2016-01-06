@@ -99,7 +99,7 @@ int Joint::getMaxTorque()
 
 void Joint::setGoalAngle(float angle)
 {
-  goalAngle = angle;
+  this->goalAngle = angle;
 }
 
 float Joint::getGoalAngle()

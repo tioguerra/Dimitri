@@ -3,6 +3,22 @@
 
 #include "JointChain.h"
 
+enum DimitriJoints {
+  LROLL,
+  LPITCH,
+  LYAW,
+  LELBOW,
+  RROLL,
+  RPITCH,
+  RYAW,
+  RELBOW,
+  WROLL,
+  WPITCH,
+  WYAW,
+  HPAN,
+  HTILT
+};
+
 class Dimitri
 {
 
@@ -57,12 +73,12 @@ class Dimitri
                  float wroll, float wpitch, float wyaw,
                  float hpan, float htilt);
 
-    void setPose(float *pose);
+    void setPose(float pose[13]);
 
     /*
      * This method gets a pose from the robot
      */
-    void getPose(float **pose);
+    void getPose(float (&pose)[13]);
 
     void getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
                  float &rroll, float &rpitch, float &ryaw, float &relbow,

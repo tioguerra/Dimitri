@@ -5,8 +5,8 @@ CXXFLAGS = -I./include -Wall -O2
 LDFLAGS = -L./lib -lm -ldxl
 AR = ar
 OBJECTS = obj/Dimitri.o obj/Joint.o obj/ElasticJoint.o \
-	  obj/JointChain.o obj/PidController.o obj/dynamixel.o \
-	  obj/dxl_hal.o
+	  obj/JointChain.o obj/Util.o obj/PidController.o \
+	  obj/dynamixel.o obj/dxl_hal.o
 
 all: lib/libdxl.a bin/dynamixel_test bin/dimitri_print \
   bin/dimitri_stance bin/dimitri_off bin/dimitri_on \

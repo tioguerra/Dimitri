@@ -1,22 +1,6 @@
 #include "Dimitri.h"
 #include "dynamixel.h"
 
-enum DimitriJoints {
-  RELBOW,
-  RYAW,
-  RROLL,
-  RPITCH,
-  LPITCH,
-  LROLL,
-  LYAW,
-  LELBOW,
-  HTILT,
-  HPAN,
-  WYAW,
-  WROLL,
-  WPITCH
-};
-
 Dimitri::Dimitri(int deviceIndex, int baudnum)
 {
   // Initialize the communications channel
@@ -33,7 +17,7 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new Joint(8, 4096-1670));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 58371));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 58345));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
 
   // Builds head
@@ -124,7 +108,7 @@ void Dimitri::setPose(float lroll, float lpitch, float lyaw, float lelbow,
   this->head->getJoint(TILT)->setGoalAngle(htilt);
 }
 
-void Dimitri::setPose(float *pose)
+void Dimitri::setPose(float pose[13])
 {
   for (int i = 0 ; i < 21 ; i++)
   {
@@ -173,50 +157,50 @@ void Dimitri::setPose(float *pose)
   }
 }
 
-void Dimitri::getPose(float **pose)
+void Dimitri::getPose(float (&pose)[13])
 {
-  for (int i = 0 ; i < 21 ; i++)
+  for (int i = 0 ; i < 13 ; i++)
   {
     switch (i)
     {
       case LROLL:
-        *pose[i] = this->leftArm->getJoint(ARMROLL)->getGoalAngle();
+        pose[i] = this->leftArm->getJoint(ARMROLL)->getAngle();
         break;
       case LPITCH:
-        *pose[i] = this->leftArm->getJoint(ARMPITCH)->getGoalAngle();
+        pose[i] = this->leftArm->getJoint(ARMPITCH)->getAngle();
         break;
       case LYAW:
-        *pose[i] = this->leftArm->getJoint(ARMYAW)->getGoalAngle();
+        pose[i] = this->leftArm->getJoint(ARMYAW)->getAngle();
         break;
       case LELBOW:
-        *pose[i] = this->leftArm->getJoint(ELBOW)->getGoalAngle();
+        pose[i] = this->leftArm->getJoint(ELBOW)->getAngle();
         break;
       case RROLL:
-        *pose[i] = this->rightArm->getJoint(ARMROLL)->getGoalAngle();
+        pose[i] = this->rightArm->getJoint(ARMROLL)->getAngle();
         break;
       case RPITCH:
-        *pose[i] = this->rightArm->getJoint(ARMPITCH)->getGoalAngle();
+        pose[i] = this->rightArm->getJoint(ARMPITCH)->getAngle();
         break;
       case RYAW:
-        *pose[i] = this->rightArm->getJoint(ARMYAW)->getGoalAngle();
+        pose[i] = this->rightArm->getJoint(ARMYAW)->getAngle();
         break;
       case RELBOW:
-        *pose[i] = this->rightArm->getJoint(ELBOW)->getGoalAngle();
+        pose[i] = this->rightArm->getJoint(ELBOW)->getAngle();
         break;
       case WROLL:
-        *pose[i] = this->waist->getJoint(WAISTROLL)->getGoalAngle();
+        pose[i] = this->waist->getJoint(WAISTROLL)->getAngle();
         break;
       case WPITCH:
-        *pose[i] = this->waist->getJoint(WAISTPITCH)->getGoalAngle();
+        pose[i] = this->waist->getJoint(WAISTPITCH)->getAngle();
         break;
       case WYAW:
-        *pose[i] = this->waist->getJoint(WAISTYAW)->getGoalAngle();
+        pose[i] = this->waist->getJoint(WAISTYAW)->getAngle();
         break;
       case HPAN:
-        *pose[i] = this->head->getJoint(PAN)->getGoalAngle();
+        pose[i] = this->head->getJoint(PAN)->getAngle();
         break;
       case HTILT:
-        *pose[i] = this->head->getJoint(TILT)->getGoalAngle();
+        pose[i] = this->head->getJoint(TILT)->getAngle();
         break;
     }
   }

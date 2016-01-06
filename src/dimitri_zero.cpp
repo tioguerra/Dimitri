@@ -5,9 +5,6 @@
 #include <cstdio>
 #include <dynamixel.h>
 
-#define RAD2DEG(x) ((x)*180.0/M_PI)
-#define DEG2RAD(x) ((x)*M_PI/180.0)
-
 void signal_callback_handler(int signum)
 {
   printf("Caught signal %d\n", signum);
@@ -21,16 +18,16 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 115200bps
-  Dimitri robot(0, 16);
+  // to /dev/ttyUSB0 with 500000bps
+  Dimitri robot(0, 3);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
   //       like this: robot.setMaxTorque(64);
   robot.getHead()->setMaxTorque(64);
   robot.getWaist()->setMaxTorque(384);
-  robot.getRightArm()->setMaxTorque(256);
-  robot.getLeftArm()->setMaxTorque(256);
+  robot.getRightArm()->setMaxTorque(384);
+  robot.getLeftArm()->setMaxTorque(384);
 
   // Enable torque to the joints
   robot.setControlMode(ANGLE);
@@ -48,7 +45,7 @@ int main(int argc, char *argv[])
     robot.update();
 
     // Gets the pose angles
-    robot.getPose( (float **)&pose );
+    robot.getPose( pose );
 
     // Print the pose angles 
     for (int i = 0 ; i < 13 ; i++)

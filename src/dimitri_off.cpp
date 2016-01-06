@@ -5,8 +5,6 @@
 #include <cstdio>
 #include <dynamixel.h>
 
-#define RAD2DEG(x) ((x)*180.0/M_PI)
-
 void signal_callback_handler(int signum)
 {
   printf("Caught signal %d\n", signum);
@@ -20,8 +18,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 115200bps
-  Dimitri robot(0, 16);
+  // to /dev/ttyUSB0 with 500000bps
+  Dimitri robot(0, 3);
 
   // Turn off the servos
   robot.setControlMode(OFF);
