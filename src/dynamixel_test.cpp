@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
   signal(SIGINT, signal_callback_handler);
 
-  if (dxl_initialize(0,3) == 0)
+  if (dxl_initialize(0,7) == 0)
   {
     printf( "Failed to open USB2Dynamixel!\n" );
     return -1;

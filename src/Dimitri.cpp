@@ -1,5 +1,6 @@
 #include "Dimitri.h"
 #include "dynamixel.h"
+#include <ctime>
 
 Dimitri::Dimitri(int deviceIndex, int baudnum)
 {
@@ -17,7 +18,7 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new Joint(8, 4096-1670));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 58345));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 57800)); //58345));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
 
   // Builds head
@@ -224,5 +225,26 @@ void Dimitri::getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
   wyaw = this->waist->getJoint(WAISTYAW)->getGoalAngle();
   hpan = this->head->getJoint(PAN)->getGoalAngle();
   htilt = this->head->getJoint(TILT)->getGoalAngle();
+}
+
+void Dimitri::delay(double seconds)
+{
+
+    // Records the initial time for each cycle
+    clock_t initial_time = clock();
+
+    double elapsed_time = 0;
+    
+    while (elapsed_time < seconds)
+    {
+
+      // Performs update
+      this->update();
+
+      // Calculates the elapsed time in this cycle so far
+      elapsed_time = double(clock() - initial_time) / CLOCKS_PER_SEC;
+
+    }
+
 }
 

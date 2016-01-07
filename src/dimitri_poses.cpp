@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <cstdio>
+#include <ctime>
 #include <dynamixel.h>
 
 void signal_callback_handler(int signum)
@@ -19,8 +20,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 500000bps
-  Dimitri robot(0, 3);
+  // to /dev/ttyUSB0 with 250000bps
+  Dimitri robot(0, 7);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
@@ -44,16 +45,15 @@ int main(int argc, char *argv[])
   // Main loop
   while (true)
   {
+
     // Iterate between 3 poses
     i = (i + 1) % 4;
 
     // Sets goal positions
     robot.setPose(poses[i]);
-    // Performs update
-    robot.update();
-
-    // Delay
-    usleep(2000000);
+    
+    // Busy delay (updating motors)
+    robot.delay(4.0);
 
   }
 

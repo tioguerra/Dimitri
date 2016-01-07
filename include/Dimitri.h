@@ -85,6 +85,12 @@ class Dimitri
                  float &wroll, float &wpitch, float &wyaw,
                  float &hpan, float &htilt);
 
+    /*
+     * This method performs a busy delay, calling the update
+     * method while waiting the time to pass
+     */
+    void delay(double seconds);
+
 };
 
 #endif 

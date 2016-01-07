@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
   // Create the Dimitri robot object connected
   // to /dev/ttyUSB0 with 500000bps
-  Dimitri robot(0, 3);
+  Dimitri robot(0, 7);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors

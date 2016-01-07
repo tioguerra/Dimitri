@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 500000bps
-  Dimitri robot(0, 3);
+  // to /dev/ttyUSB0 with 250000bps
+  Dimitri robot(0, 7);
 
   // Turn off the servos
   robot.setControlMode(OFF);
