@@ -44,6 +44,7 @@ class Joint
     virtual ~Joint();
 
     float getAngle();
+    float getNormalizedAngle();
 
     void setMaxAngle(float angle);
     float getMaxAngle();
@@ -55,7 +56,9 @@ class Joint
 
     void setControlMode(int mode);
     void setGoalAngle(float angle);
+    void setNormalizedGoalAngle(float angle);
     float getGoalAngle();
+    float getNormalizedGoalAngle();
 
     void setJointCenterValue(float value) { this->jointCenterValue = value; }
     int getJointCenterValue() { return this->jointCenterValue; }

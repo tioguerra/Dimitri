@@ -39,12 +39,12 @@ int main(int argc, char *argv[])
     robot.update();
 
     // Gets the pose angles
-    robot.getPose( pose );
+    robot.getNormalizedPose( pose );
 
     // Print the pose angles 
     for (int i = 0 ; i < 13 ; i++)
     {
-      printf("%+04.0f,", RAD2DEG(pose[i]));
+      printf("%+01.3f,", pose[i]);
     }
     printf("\n");
 

@@ -9,9 +9,9 @@ OBJECTS = obj/Dimitri.o obj/Joint.o obj/ElasticJoint.o \
 	  obj/dynamixel.o obj/dxl_hal.o
 
 all: lib/libdxl.a bin/dynamixel_test bin/dynamixel_test_id \
-  bin/dimitri_print bin/dimitri_stance bin/dimitri_off \
-  bin/dimitri_on bin/dimitri_zero bin/dimitri_teach \
-  bin/dimitri_poses
+  bin/dimitri_print bin/dimitri_print_normalized \
+  bin/dimitri_stance bin/dimitri_off bin/dimitri_on \
+  bin/dimitri_zero bin/dimitri_teach bin/dimitri_poses
 	@echo $(COLOR)All done! $(NOCOLOR)
 
 COLOR = '\033[0;32m'
@@ -30,6 +30,10 @@ bin/dynamixel_test_id: obj/dynamixel_test_id.o lib/libdxl.a
 	@$(CXX) $< -o $@ $(LDFLAGS)
 
 bin/dimitri_print: obj/dimitri_print.o $(OBJECTS) lib/libdxl.a
+	@echo -e $(COLOR)Linking $@ $(NOCOLOR)
+	@$(CXX) $^ -o $@ $(LDFLAGS)
+
+bin/dimitri_print_normalized: obj/dimitri_print_normalized.o $(OBJECTS) lib/libdxl.a
 	@echo -e $(COLOR)Linking $@ $(NOCOLOR)
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
