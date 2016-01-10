@@ -1,17 +1,19 @@
 CC = gcc
 CXX = g++
-CFLAGS = -I./include -Wall -O2
-CXXFLAGS = -I./include -Wall -O2
-LDFLAGS = -L./lib -lm -ldxl
+CFLAGS = -I./include -I/usr/include -Wall -O2
+CXXFLAGS = -I./include -I/usr/include -I/usr/include/opencv `pkg-config --cflags opencv` -Wall -O2
+LDFLAGS = -L./lib -lm -ldxl `pkg-config --libs opencv`
 AR = ar
 OBJECTS = obj/Dimitri.o obj/Joint.o obj/ElasticJoint.o \
 	  obj/JointChain.o obj/Util.o obj/PidController.o \
-	  obj/dynamixel.o obj/dxl_hal.o
+	  obj/dynamixel.o obj/dxl_hal.o obj/Object.o \
+	  obj/Camera.o
 
 all: lib/libdxl.a bin/dynamixel_test bin/dynamixel_test_id \
   bin/dimitri_print bin/dimitri_print_normalized \
   bin/dimitri_stance bin/dimitri_off bin/dimitri_on \
-  bin/dimitri_zero bin/dimitri_teach bin/dimitri_poses
+  bin/dimitri_zero bin/dimitri_teach bin/dimitri_poses \
+  bin/camera_test bin/dimitri_vision
 	@echo $(COLOR)All done! $(NOCOLOR)
 
 COLOR = '\033[0;32m'
@@ -58,6 +60,14 @@ bin/dimitri_teach: obj/dimitri_teach.o $(OBJECTS) lib/libdxl.a
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
 bin/dimitri_poses: obj/dimitri_poses.o $(OBJECTS) lib/libdxl.a
+	@echo -e $(COLOR)Linking $@ $(NOCOLOR)
+	@$(CXX) $^ -o $@ $(LDFLAGS)
+
+bin/camera_test: obj/camera_test.o $(OBJECTS) lib/libdxl.a
+	@echo -e $(COLOR)Linking $@ $(NOCOLOR)
+	@$(CXX) $^ -o $@ $(LDFLAGS)
+
+bin/dimitri_vision: obj/dimitri_vision.o $(OBJECTS) lib/libdxl.a
 	@echo -e $(COLOR)Linking $@ $(NOCOLOR)
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 
