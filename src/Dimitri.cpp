@@ -1,5 +1,6 @@
 #include "Dimitri.h"
 #include "dynamixel.h"
+#include "Util.h"
 #include <ctime>
 
 Dimitri::Dimitri(int deviceIndex, int baudnum)
@@ -10,15 +11,15 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   // Builds right arm
   this->rightArm = new JointChain();
   this->rightArm->addJoint(new ElasticJoint(1, 101, 1860, 2646));
-  this->rightArm->addJoint(new ElasticJoint(2, 102, 5061-4096, 5770));
-  this->rightArm->addJoint(new ElasticJoint(3, 103, 1340, 4584));
-  this->rightArm->addJoint(new ElasticJoint(4, 104, 2216, 4454));
+  this->rightArm->addJoint(new ElasticJoint(2, 102, 4861-4096, 5770));
+  this->rightArm->addJoint(new ElasticJoint(3, 103, 5488-4096, 4480));
+  this->rightArm->addJoint(new ElasticJoint(4, 104, 6841-3996, 5110));
 
   // Builds left arm
   this->leftArm = new JointChain();
-  this->leftArm->addJoint(new Joint(8, 4096-1670));
+  this->leftArm->addJoint(new ElasticJoint(8, 108, 7020-4096, 4238));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 7428-4096, 57800)); //58345));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 6865-4096, 59900));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
 
   // Builds head
@@ -31,6 +32,26 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->waist->addJoint(new Joint(11, 2048));
   this->waist->addJoint(new Joint(12, 2048));
   this->waist->addJoint(new Joint(13, 2038));
+
+  // Set the joint limits for the arms
+  this->rightArm->getJoint(ARMROLL)->setAngleLimits(DEG2RAD(-90.0),DEG2RAD(110.0));
+  this->leftArm->getJoint(ARMROLL)->setAngleLimits(DEG2RAD(-90.0),DEG2RAD(110.0));
+  this->rightArm->getJoint(ARMPITCH)->setAngleLimits(DEG2RAD(-225.0),DEG2RAD(45.0));
+  this->leftArm->getJoint(ARMPITCH)->setAngleLimits(DEG2RAD(-225.0),DEG2RAD(45.0));
+  this->rightArm->getJoint(ARMYAW)->setAngleLimits(DEG2RAD(-193.0),DEG2RAD(35.0));
+  this->leftArm->getJoint(ARMYAW)->setAngleLimits(DEG2RAD(-193.0),DEG2RAD(35.0));
+  this->rightArm->getJoint(ELBOW)->setAngleLimits(DEG2RAD(0.0),DEG2RAD(90.0));
+  this->leftArm->getJoint(ELBOW)->setAngleLimits(DEG2RAD(0.0),DEG2RAD(90.0));
+
+  // Set the joint limits for the head
+  this->head->getJoint(PAN)->setAngleLimits(DEG2RAD(-135.0),DEG2RAD(135.0));
+  this->head->getJoint(TILT)->setAngleLimits(DEG2RAD(-80.0),DEG2RAD(90.0));
+
+  // Set the joint limits for the waist
+  this->waist->getJoint(WAISTYAW)->setAngleLimits(DEG2RAD(-25.0),DEG2RAD(25.0));
+  this->waist->getJoint(WAISTROLL)->setAngleLimits(DEG2RAD(-20.0),DEG2RAD(20.0));
+  this->waist->getJoint(WAISTPITCH)->setAngleLimits(DEG2RAD(-30.0),DEG2RAD(25.0));
+
 }
 
 Dimitri::~Dimitri()

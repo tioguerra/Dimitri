@@ -49,6 +49,7 @@ class Joint
     float getMaxAngle();
     void setMinAngle(float angle);
     float getMinAngle();
+    void setAngleLimits(float minAngle, float maxAngle);
     void setMaxTorque(int torque);
     int getMaxTorque();
 

@@ -54,67 +54,86 @@ void Joint::setControlMode(int mode)
       break;
 
   }
+
+  // Saves the new control mode
   this->controlMode = mode;
 }
 
 float Joint::getAngle()
 {
+  // Return the joint angle last read from the motor
   return angle;
 }
 
 void Joint::setMaxAngle(float angle)
 {
-  int value = ANGLE2VALUE(angle);
-  dxl_write_word(this->jointId, 6, value);
+  // Sets the maximum angle limit for this joint
+  this->maxAngle = angle;
 }
 
 float Joint::getMaxAngle()
 {
-  int value = dxl_read_word(this->jointId, 6);
-  return VALUE2ANGLE(value);
+  // Returns the maximum angle limit for this joint
+  return this->maxAngle;
 }
 
 void Joint::setMinAngle(float angle)
 {
-  int value = ANGLE2VALUE(angle);
-  dxl_write_word(this->jointId, 8, value);
+  // Sets the minimum angle limit for this joint
+  this->minAngle = angle;
 }
 
 float Joint::getMinAngle()
 {
-  int value = dxl_read_word(this->jointId, 8);
-  return VALUE2ANGLE(value);
+  // Returns the minimum angle limit for this joint
+  return this->minAngle;
+}
+
+void Joint::setAngleLimits(float minAngle, float maxAngle)
+{
+  // Adjust minimum and maximum joint limits
+  setMinAngle(minAngle);
+  setMaxAngle(maxAngle);
 }
 
 void Joint::setMaxTorque(int torque)
 {
+  // Set the maximum torque to the motors
   dxl_write_word(this->jointId, 34, torque);
 }
 
 int Joint::getMaxTorque()
 {
+  // Returns the current maximum torque set
+  // in the motors
   return dxl_read_word(this->jointId, 34);
 }
 
 
 void Joint::setGoalAngle(float angle)
 {
-  this->goalAngle = angle;
+  // Sets new goal angle only if within the joint limits
+  if (angle >= this->minAngle && angle <= this->maxAngle)
+      this->goalAngle = angle;
 }
 
 float Joint::getGoalAngle()
 {
+  // Returns the current goal angle
   return goalAngle;
 }
 
 void Joint::readAngle()
 {
+  // In the case of the simple joint the
+  // angle is the motor angle.
   this->readMotorAngle();
   this->angle = this->motorAngle;
 }
 
 void Joint::readMotorAngle()
 {
+  // Read the motor angle from the motor
   int value = dxl_read_word(this->jointId, 36);
   if (dxl_get_result() == 1)
   {
@@ -124,6 +143,7 @@ void Joint::readMotorAngle()
 
 void Joint::writeGoalAngle(float angle)
 {
+  // Write the goal angle to the motor
   dxl_write_word(this->jointId, 30, this->jointCenterValue + ANGLE2VALUE(angle));
 }
 

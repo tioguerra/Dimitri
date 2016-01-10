@@ -113,8 +113,8 @@ void dxl_rx_packet(void)
 		gbRxGetLength = 0;
 		gbRxPacketLength = 6;
 	}
-	
-	nRead = dxl_hal_rx( (unsigned char*)&gbStatusPacket[gbRxGetLength], gbRxPacketLength - gbRxGetLength );
+
+	nRead = dxl_hal_rx( (unsigned char*)&gbStatusPacket[gbRxGetLength], gbRxPacketLength - gbRxGetLength); //was );
 	gbRxGetLength += nRead;
 	if( gbRxGetLength < gbRxPacketLength )
 	{

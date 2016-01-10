@@ -2,6 +2,8 @@
 #include "dynamixel.h"
 #include <cstdio>
 
+#define SPRINGVALUEMEMORY 0.7
+
 ElasticJoint::ElasticJoint(int jointId, int springId, int jointCenterValue, int springCenterValue)
                                           : Joint(jointId, jointCenterValue)
 {
@@ -36,13 +38,25 @@ void ElasticJoint::readAngle()
 
 void ElasticJoint::readSpringAngle()
 {
-  int value = dxl_read_word(this->springId, 36);
-  if (dxl_get_result() == 1)
+  bool quit = false;
+  int count = 1;
+  int value;
+
+  do
   {
-    this->springAngle = (0.8)*this->springAngle + (0.2)*SPRINGVALUE2ANGLE(value - this->springCenterValue);
-    // Stores the resulting torque
-    this->torque = SPRINGANGLE2TORQUE(this->springAngle);
-  }
+    value = dxl_read_word(this->springId, 36);
+    if (dxl_get_result() == 1)
+    {
+      this->springAngle = (SPRINGVALUEMEMORY)*this->springAngle
+                        + (1-SPRINGVALUEMEMORY)*SPRINGVALUE2ANGLE(value - this->springCenterValue);
+      // Stores the resulting torque
+      this->torque = SPRINGANGLE2TORQUE(this->springAngle);
+      quit = true;
+    }
+    if (count > 3) quit = true;
+    count++;
+  } while (!quit);
+
 }
 
 void ElasticJoint::update()

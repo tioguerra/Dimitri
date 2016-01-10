@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   {
     for (int i = 1 ; i <= 13 ; i++)
     {
-      if (i >= 1 && i <= 7)
+      if (i >= 1 && i <= 8)
       {
         int pos_spring = dxl_read_word( 0x64 + i, 0x24 );
         int result_spring = dxl_get_result();

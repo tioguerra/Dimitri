@@ -26,20 +26,21 @@ int main(int argc, char *argv[])
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
   //       like this: robot.setMaxTorque(64);
-  robot.getHead()->setMaxTorque(64);
-  robot.getWaist()->setMaxTorque(384);
-  robot.getRightArm()->setMaxTorque(448);
-  robot.getLeftArm()->setMaxTorque(448);
+  robot.getHead()->setMaxTorque(90);
+  robot.getWaist()->setMaxTorque(400);
+  robot.getRightArm()->setMaxTorque(460);
+  robot.getLeftArm()->setMaxTorque(460);
 
   // Enable torque to the joints
   robot.setControlMode(ANGLE);
 
   // This array stores the pose angles
-  float poses[4][13];
+  float poses[5][13];
   createPoseDeg(poses[0],  0,  0,  0,  0,   0,  0,  0,  0,  0, 0,  0,   0,  0);
   createPoseDeg(poses[1],-60, 60,  0,-90, -60, 60,  0,-90,  0, 0,  0,   0,  0);
-  createPoseDeg(poses[2],-63,112, 61,-90, -52, 68, -3,-71,-12, 4, 12,  47, 23);
-  createPoseDeg(poses[3],-78,+119,2,0,-38,9,32,-113,-1,-17,-4,27,30);
+  createPoseDeg(poses[2],-78,119,2,0,-38,9,32,-113,-1,-17,-4,27,30);
+  createPoseDeg(poses[3],-63,112, 61,-90, -52, 68, -3,-71,-12, 4, 12,  47, 23);
+  createPoseDeg(poses[4],-42,171,1,-50,-42,171,1,-50,-1,-19,-1,0,53);
   int i = 0;
 
   // Main loop
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
   {
 
     // Iterate between 3 poses
-    i = (i + 1) % 4;
+    i = (i + 1) % 5;
 
     // Sets goal positions
     robot.setPose(poses[i]);
