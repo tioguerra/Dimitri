@@ -1,6 +1,6 @@
 #include "dxl_hal.h"
 #include "dynamixel.h"
-//#include <stdio.h>
+#include <stdio.h>
 
 #define ID					(2)
 #define LENGTH				(3)
@@ -121,6 +121,7 @@ void dxl_rx_packet(void)
 		if( dxl_hal_timeout() == 1 )
 		{
                         //printf("Length problem. Expected %d, got %d.\n", gbRxPacketLength, gbRxGetLength);
+                        //printf("dxl_hal_timeout() == 1\n");
 			if(gbRxGetLength == 0)
 				gbCommStatus = COMM_RXTIMEOUT;
 			else

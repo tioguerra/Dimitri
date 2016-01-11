@@ -19,7 +19,7 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new ElasticJoint(8, 108, 7020-4096, 4238));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 6865-4096, 59600));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 6865-4096, 59800));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
 
   // Builds head

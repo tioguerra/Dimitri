@@ -171,4 +171,13 @@ void Camera::processFrame()
   imshow("Dimitri's Vision", cameraImage);
 }
 
+float Camera::getNormalizedFocusPan()
+{
+  return this->head->getJoint(PAN)->normalizeAngle(this->focusPan);
+}
+
+float Camera::getNormalizedFocusTilt()
+{
+  return this->head->getJoint(TILT)->normalizeAngle(this->focusTilt);
+}
 

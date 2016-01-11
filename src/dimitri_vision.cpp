@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   // P.S.: optionally can set for all motors
   //       like this: robot.setMaxTorque(64);
   robot.getHead()->setMaxTorque(1023);
-  robot.getWaist()->setMaxTorque(1023);
+  robot.getWaist()->setMaxTorque(384);
   robot.getRightArm()->setMaxTorque(384);
   robot.getLeftArm()->setMaxTorque(384);
 
@@ -63,7 +63,9 @@ int main(int argc, char *argv[])
     robot.getHead()->update();
 
     // Print the focus
-    printf("Focus %+3.0f %3.0f\n", RAD2DEG(cam.getFocusPan()), RAD2DEG(cam.getFocusTilt()));
+    printf( "Focus %+3.0f (%1.2f) %3.0f (%1.2f)\n",
+            RAD2DEG(cam.getFocusPan()), cam.getNormalizedFocusPan(),
+            RAD2DEG(cam.getFocusTilt()), cam.getNormalizedFocusTilt() );
 
     // Control framerate
     cv::waitKey(1);

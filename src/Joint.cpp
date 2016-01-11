@@ -189,7 +189,7 @@ void Joint::update()
 
 float Joint::getNormalizedAngle()
 {
-  return (this->angle - this->minAngle) / (this->maxAngle - this->minAngle);
+  return this->normalizeAngle(this->angle);
 }
 
 float Joint::getNormalizedGoalAngle()
@@ -200,5 +200,10 @@ float Joint::getNormalizedGoalAngle()
 void Joint::setNormalizedGoalAngle(float angle)
 {
   this->goalAngle = this->minAngle + angle * (this->maxAngle - this->minAngle);
+}
+
+float Joint::normalizeAngle(float angle)
+{
+  return (angle - this->minAngle) / (this->maxAngle - this->minAngle);
 }
 

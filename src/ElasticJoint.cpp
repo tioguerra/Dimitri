@@ -42,6 +42,11 @@ void ElasticJoint::readSpringAngle()
   int count = 1;
   int value;
 
+  if (this->springId == 103)
+  {
+    count = -2;
+  }
+
   do
   {
     value = dxl_read_word(this->springId, 36);

@@ -152,7 +152,7 @@ void dxl_hal_set_timeout( int NumRcvByte )
 {
 	glStartTime = myclock();
         // Dimitri
-	gfRcvWaitTime = (float)(gfByteTransTime*(float)NumRcvByte + 25.0f); // was + 5.0f);
+	gfRcvWaitTime = (float)(gfByteTransTime*(float)NumRcvByte + 8.0f); //25.0f); // was + 5.0f);
 }
 
 int dxl_hal_timeout(void)
