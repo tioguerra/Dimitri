@@ -1,6 +1,6 @@
 # Dimitri
 
-This is Dimitri Robot's source code. Here you will find the base code for moving its joints, reading their values, reading spring values and other parameters. A simple color object tracking is also included (dependence on OpenCV).
+This is Dimitri robot's source code. Here you will find the base code for moving its joints, reading their values, reading spring values and other parameters. A simple color object tracking is also included (dependence on OpenCV).
 
 ## Instalation
 
