@@ -39,6 +39,12 @@ class Camera
     float getNormalizedFocusPan();
     float getNormalizedFocusTilt();
 
+    // Sets and gets the focus step div. A value of 1 makes
+    // the camera move fast. A value larger than 1 makes the
+    // camera move slowly.
+    void setFocusStepDiv(float stepDiv) { this->focusStepDiv = stepDiv; }
+    float getFocusStepDiv() { return this->focusStepDiv; }
+
   private:
 
     cv::Mat cameraImage;
@@ -55,6 +61,7 @@ class Camera
     JointChain *head;
     float focusPan;
     float focusTilt;
+    float focusStepDiv;
 
 };
 

@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
   // Create the camera object
   Camera cam;
 
-  // Create a red object
-  Object obj("red");
+  // Create an object
+  Object obj("green");
 
   // Add tracking of red objects
   cam.addObjectToTrack(&obj);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
   //       like this: robot.setMaxTorque(64);
-  robot.getHead()->setMaxTorque(50); //1023);
+  robot.getHead()->setMaxTorque(1023);
   robot.getWaist()->setMaxTorque(384);
   robot.getRightArm()->setMaxTorque(384);
   robot.getLeftArm()->setMaxTorque(384);
@@ -52,6 +52,10 @@ int main(int argc, char *argv[])
 
   // Add neck to the camera
   cam.setHead(robot.getHead());
+  // Make the camera move neck
+  // in only one step (works
+  // only in faster framerate)
+  cam.setFocusStepDiv(1.0);
 
   while (true)
   {

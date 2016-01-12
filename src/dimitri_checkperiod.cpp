@@ -19,31 +19,7 @@ int main(int argc, char *argv[])
   // For handling Ctrl+C nicely
   signal(SIGINT, signal_callback_handler);
 
-  // Check for command line arguments
-  if (argc != 2)
-  {
-    printf("\n");
-    printf("This program will record the normalized joint\n");
-    printf("positions and focus neck angle at green object.\n");
-    printf("\n");
-    printf("Usage:\n");
-    printf("       %s filename.dat\n", argv[0]);
-    printf("\n");
-    printf("Hit Ctrl+C to stop recording\n");
-    printf("\n");
-    exit(EXIT_SUCCESS);
-  }
-
-  FILE *fp = fopen(argv[1], "w");
-  if (fp == NULL)
-  {
-    printf("Error opening file %s\n", argv[1]);
-    exit(EXIT_FAILURE);
-  }
-
-  printf(">> Setting up camera...\n");
-
-  // Create the camera
+  // Create the camera object
   Camera cam;
 
   // Create a red object
@@ -58,8 +34,6 @@ int main(int argc, char *argv[])
 
   // Add neck to the camera
   cam.setHead(robot.getHead());
-
-  printf(">> Setting up robot posture...\n");
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
@@ -93,11 +67,17 @@ int main(int argc, char *argv[])
   // the vision feedback
   float data[13];
 
-  printf(">> Recording! Hit Ctrl+C to stop.\n");
-
   // Main loop
+  double sum_times = 0.0;
+  int total = 0;
+  clock_t initial_time = clock();
   while (true)
   {
+    double elapsed_time = double(clock() - initial_time) / CLOCKS_PER_SEC;
+    sum_times += elapsed_time;
+    total++;
+    printf("Time:%1.3f Avg:%1.3f ", elapsed_time, sum_times / (double)total);
+    initial_time = clock();
 
     // Process the camera frame
     cam.processFrame();
@@ -115,12 +95,12 @@ int main(int argc, char *argv[])
     data[11] = cam.getNormalizedFocusPan();
     data[12] = cam.getNormalizedFocusTilt();
 
-    // Save the pose angles 
+    // Print the pose angles 
     for (int i = 0 ; i < 13 ; i++)
     {
-      fprintf(fp, "%1.3f ", data[i]);
+      printf("%+01.2f,", data[i]);
     }
-    fprintf(fp, "\n");
+    printf("\n");
 
     // Update the image on the screen
     cv::waitKey(1);

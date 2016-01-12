@@ -18,6 +18,7 @@ Camera::Camera()
   this->capture.set(CV_CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH);
   this->capture.set(CV_CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT);
   this->focusObjIndex = 0;
+  this->focusStepDiv = 5.0;
   this->head = NULL;
   waitKey(1000);
 }
@@ -175,8 +176,8 @@ void Camera::moveHeadToFocus()
       Joint *tilt = head->getJoint(TILT);
       float deltaPan = this->focusPan - pan->getAngle();
       float deltaTilt = this->focusTilt - tilt->getAngle();
-      deltaPan /= 3.0;
-      deltaTilt /= 5.0;
+      deltaPan /= this->focusStepDiv*3.0/5.0;
+      deltaTilt /= this->focusStepDiv;
       pan->setGoalAngle(pan->getAngle() + deltaPan);
       tilt->setGoalAngle(tilt->getAngle() + deltaTilt);
 }
