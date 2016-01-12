@@ -20,6 +20,7 @@ ElasticJoint::~ElasticJoint()
 
 void ElasticJoint::readAngle()
 {
+
   // Read current motor angle
   int value = dxl_read_word(this->jointId, 36);
   if (dxl_get_result() == 1)
@@ -38,6 +39,7 @@ void ElasticJoint::readAngle()
 
 void ElasticJoint::readSpringAngle()
 {
+
   bool quit = false;
   int count = 1;
   int value;

@@ -1,7 +1,6 @@
 #include "Dimitri.h"
 #include "dynamixel.h"
 #include "Util.h"
-#include <ctime>
 
 Dimitri::Dimitri(int deviceIndex, int baudnum)
 {
@@ -12,15 +11,16 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->rightArm = new JointChain();
   this->rightArm->addJoint(new ElasticJoint(1, 101, 1860, 2646));
   this->rightArm->addJoint(new ElasticJoint(2, 102, 4861-4096, 5770));
-  this->rightArm->addJoint(new ElasticJoint(3, 103, 5488-4096, 4480));
-  this->rightArm->addJoint(new ElasticJoint(4, 104, 6841-3996, 5110));
+  this->rightArm->addJoint(new ElasticJoint(3, 103, 5428-4096, 4480));
+  // 4:6862,104:5316
+  this->rightArm->addJoint(new ElasticJoint(4, 104, 6862-3996, 5316));
 
   // Builds left arm
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new ElasticJoint(8, 108, 7020-4096, 4238));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 6865-4096, 59800));
-  this->leftArm->addJoint(new ElasticJoint(5, 105, 5697-4096, 63327));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 6665-4096, 59800));
+  this->leftArm->addJoint(new ElasticJoint(5, 105, 5597-4096, 63327));
 
   // Builds head
   this->head = new JointChain();
@@ -52,6 +52,8 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->waist->getJoint(WAISTROLL)->setAngleLimits(DEG2RAD(-20.0),DEG2RAD(20.0));
   this->waist->getJoint(WAISTPITCH)->setAngleLimits(DEG2RAD(-30.0),DEG2RAD(25.0));
 
+  // Records the initial time
+  this->initial_time = clock();
 }
 
 Dimitri::~Dimitri()
@@ -150,7 +152,7 @@ void Dimitri::setNormalizedPose(float lroll, float lpitch, float lyaw, float lel
   this->head->getJoint(TILT)->setNormalizedGoalAngle(htilt);
 }
 
-void Dimitri::setPose(float pose[13])
+void Dimitri::setPose(float pose[])
 {
   for (int i = 0 ; i < 21 ; i++)
   {
@@ -199,7 +201,7 @@ void Dimitri::setPose(float pose[13])
   }
 }
 
-void Dimitri::setNormalizedPose(float pose[13])
+void Dimitri::setNormalizedPose(float pose[])
 {
   for (int i = 0 ; i < 21 ; i++)
   {
@@ -248,7 +250,7 @@ void Dimitri::setNormalizedPose(float pose[13])
   }
 }
 
-void Dimitri::getNormalizedPose(float (&pose)[13])
+void Dimitri::getNormalizedPose(float pose[]) //(&pose)[13])
 {
   for (int i = 0 ; i < 13 ; i++)
   {
@@ -297,7 +299,7 @@ void Dimitri::getNormalizedPose(float (&pose)[13])
   }
 }
 
-void Dimitri::getPose(float (&pose)[13])
+void Dimitri::getPose(float pose[]) //(&pose)[13])
 {
   for (int i = 0 ; i < 13 ; i++)
   {
@@ -394,8 +396,7 @@ void Dimitri::delay(double seconds)
 
     double elapsed_time = 0;
     
-    while (elapsed_time < seconds)
-    {
+    do {
 
       // Performs update
       this->update();
@@ -403,7 +404,30 @@ void Dimitri::delay(double seconds)
       // Calculates the elapsed time in this cycle so far
       elapsed_time = double(clock() - initial_time) / CLOCKS_PER_SEC;
 
-    }
+    } while (elapsed_time < seconds);
 
+}
+
+void Dimitri::tick( double seconds )
+{
+
+    double elapsed_time = 0;
+    time_t current_time;
+
+    do {
+
+      // Calculates the elapsed time in this cycle so far
+      current_time = clock();
+      elapsed_time = double(current_time - this->initial_time) / CLOCKS_PER_SEC;
+
+    } while (elapsed_time < seconds);
+
+    this->initial_time = current_time;
+}
+
+void Dimitri::tickUpdate( double seconds )
+{
+  this->update();
+  this->tick( seconds );
 }
 

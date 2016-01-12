@@ -85,10 +85,11 @@ void dxl_tx_packet(void)
 		return;
 	}
 
+        // Dimitri
 	if( gbInstructionPacket[INSTRUCTION] == INST_READ )
-		dxl_hal_set_timeout( gbInstructionPacket[PARAMETER+1] + 6 );
+		dxl_hal_set_timeout( gbInstructionPacket[PARAMETER+1] + 6 ); //6 );
 	else
-		dxl_hal_set_timeout( 6 );
+		dxl_hal_set_timeout( 6 ); //6 );
 
 	gbCommStatus = COMM_TXSUCCESS;
 }
@@ -120,12 +121,16 @@ void dxl_rx_packet(void)
 	{
 		if( dxl_hal_timeout() == 1 )
 		{
-                        //printf("Length problem. Expected %d, got %d.\n", gbRxPacketLength, gbRxGetLength);
-                        //printf("dxl_hal_timeout() == 1\n");
 			if(gbRxGetLength == 0)
+                        {
+                                //printf("COMM_RXTIMEOUT\n");
 				gbCommStatus = COMM_RXTIMEOUT;
+                        }
 			else
+                        {
+                                //printf("COMM_RXCORRUPT\n");
 				gbCommStatus = COMM_RXCORRUPT;
+                        }
 			giBusUsing = 0;
 			return;
 		}
@@ -202,9 +207,12 @@ void dxl_txrx_packet(void)
 	if( gbCommStatus != COMM_TXSUCCESS )
 		return;	
 	
+        int i = 0;
 	do{
-		dxl_rx_packet();		
-	}while( gbCommStatus == COMM_RXWAITING );	
+		dxl_rx_packet();
+                i++;
+	}while( gbCommStatus == COMM_RXWAITING );
+        //printf("Waited:%d ",i);
 }
 
 int dxl_get_result(void)

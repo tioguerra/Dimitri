@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 250000bps
-  Dimitri robot(0, 7);
+  // to /dev/ttyUSB0
+  Dimitri robot(0, 4);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
@@ -36,11 +36,16 @@ int main(int argc, char *argv[])
 
   // This array stores the pose angles
   float poses[5][13];
-  createPoseDeg(poses[0],  0,  0,  0,  0,   0,  0,  0,  0,  0, 0,  0,   0,  0);
-  createPoseDeg(poses[1],-60, 60,  0,-90, -60, 60,  0,-90,  0, 0,  0,   0,  0);
-  createPoseDeg(poses[2],-78,119,2,0,-38,9,32,-113,-1,-17,-4,27,30);
-  createPoseDeg(poses[3],-63,112, 61,-90, -52, 68, -3,-71,-12, 4, 12,  47, 23);
-  createPoseDeg(poses[4],-42,171,1,-50,-42,171,1,-50,-1,-19,-1,0,53);
+  // zero
+  createPoseDeg(poses[0],  0,  0,  0,  0,   0,  0,  0,   0,  0,  0,  0, 0, 0);
+  // wondering
+  createPoseDeg(poses[1],-63,112, 61,-90, -40, 50, 35, -90,-12,  4, 12,47,23);
+  // stance
+  createPoseDeg(poses[2],-60, 70, 20,-90, -60, 70, 20, -90,  0,  0,  0, 0, 0);
+  // sky
+  createPoseDeg(poses[3],-42,171,  1,-50, -42,171,  1, -50, -1,-19, -1, 0,53);
+  // pointing
+  createPoseDeg(poses[4],-78,119,  2,  0, -38, 40, 32,-113, -1,-17, -4,27,30);
   int i = 0;
 
   // Main loop
@@ -51,6 +56,7 @@ int main(int argc, char *argv[])
     i = (i + 1) % 5;
 
     // Sets goal positions
+    printf("Pose %d\n", i);
     robot.setPose(poses[i]);
     
     // Busy delay (updating motors)

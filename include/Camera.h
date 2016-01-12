@@ -26,6 +26,11 @@ class Camera
     // Connects to the robot's neck for pan/tilt tracking
     void setHead(JointChain *head) { this->head = head; }
 
+    // Moves the head to focus the visible object
+    // (will only refresh goalAngles, still need
+    //  to call update() on robot, or on the head)
+    void moveHeadToFocus();
+
     // Gets the focus in neck angle
     float getFocusPan() { return focusPan; }
     float getFocusTilt() { return focusTilt; }

@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 250000bps
-  Dimitri robot(0, 7);
+  // to /dev/ttyUSB0
+  Dimitri robot(0, 4);
 
   // Sets maximum torque to the joints
   // P.S.: optionally can set for all motors
@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
   while (true)
   {
     // Sets goal positions
-    robot.setPose(DEG2RAD(-60),DEG2RAD(60),0,DEG2RAD(-90),
-                  DEG2RAD(-60),DEG2RAD(60),0,DEG2RAD(-90),
+    robot.setPose(DEG2RAD(-50),DEG2RAD(75),DEG2RAD(30),DEG2RAD(-90),
+                  DEG2RAD(-50),DEG2RAD(75),DEG2RAD(30),DEG2RAD(-90),
                   0,0,0,0,0);
 
     // Performs update

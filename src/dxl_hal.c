@@ -28,7 +28,7 @@ int dxl_hal_open(int deviceIndex, float baudrate)
 	memset(&newtio, 0, sizeof(newtio));
 	dxl_hal_close();
 	
-	if((gSocket_fd = open(gDeviceName, O_RDWR/*|O_NOCTTY|O_NONBLOCK*/)) < 0) {
+	if((gSocket_fd = open(gDeviceName, O_RDWR|O_NOCTTY|O_NONBLOCK)) < 0) {
 		fprintf(stderr, "device open error: %s\n", dev_name);
 		goto DXL_HAL_OPEN_ERROR;
 	}
@@ -152,7 +152,7 @@ void dxl_hal_set_timeout( int NumRcvByte )
 {
 	glStartTime = myclock();
         // Dimitri
-	gfRcvWaitTime = (float)(gfByteTransTime*(float)NumRcvByte + 8.0f); //25.0f); // was + 5.0f);
+	gfRcvWaitTime = (float)(gfByteTransTime*(float)NumRcvByte + 8.0f); //15.0f); // was + 5.0f);
 }
 
 int dxl_hal_timeout(void)
@@ -168,3 +168,4 @@ int dxl_hal_timeout(void)
 		
 	return 0;
 }
+

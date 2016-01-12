@@ -164,11 +164,21 @@ void Camera::processFrame()
       float tilt_angle = ((y - half_height) / half_height)*(CAMERA_VERTICAL_FIELD/2.0);
       this->focusPan = pan->getAngle() - pan_angle;
       this->focusTilt = tilt->getAngle() - tilt_angle;
-      pan->setGoalAngle(this->focusPan);
-      tilt->setGoalAngle(this->focusTilt);
     }
   }
   imshow("Dimitri's Vision", cameraImage);
+}
+
+void Camera::moveHeadToFocus()
+{
+      Joint *pan = head->getJoint(PAN);
+      Joint *tilt = head->getJoint(TILT);
+      float deltaPan = this->focusPan - pan->getAngle();
+      float deltaTilt = this->focusTilt - tilt->getAngle();
+      deltaPan /= 3.0;
+      deltaTilt /= 5.0;
+      pan->setGoalAngle(pan->getAngle() + deltaPan);
+      tilt->setGoalAngle(tilt->getAngle() + deltaTilt);
 }
 
 float Camera::getNormalizedFocusPan()

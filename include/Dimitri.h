@@ -2,6 +2,7 @@
 #define DIMITRI_H
 
 #include "JointChain.h"
+#include <ctime>
 
 enum DimitriJoints {
   LROLL,
@@ -29,6 +30,8 @@ class Dimitri
     JointChain *head;
     JointChain *waist;
     
+    time_t initial_time;
+
   public:
 
     /*
@@ -73,26 +76,26 @@ class Dimitri
                  float wroll, float wpitch, float wyaw,
                  float hpan, float htilt);
 
-    void setPose(float pose[13]);
+    void setPose(float pose[]);
 
     void setNormalizedPose(float lroll, float lpitch, float lyaw, float lelbow,
                            float rroll, float rpitch, float ryaw, float relbow,
                            float wroll, float wpitch, float wyaw,
                            float hpan, float htilt);
 
-    void setNormalizedPose(float pose[13]);
+    void setNormalizedPose(float pose[]);
 
     /*
      * This method gets a pose from the robot
      */
-    void getPose(float (&pose)[13]);
+    void getPose(float pose[]); //(&pose)[]);
 
     void getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
                  float &rroll, float &rpitch, float &ryaw, float &relbow,
                  float &wroll, float &wpitch, float &wyaw,
                  float &hpan, float &htilt);
 
-    void getNormalizedPose(float (&pose)[13]);
+    void getNormalizedPose(float pose[]); //(&pose)[]);
 
     void getNormalizedPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
                            float &rroll, float &rpitch, float &ryaw, float &relbow,
@@ -104,6 +107,18 @@ class Dimitri
      * method while waiting the time to pass
      */
     void delay(double seconds);
+
+    /*
+     * This method ensures a uniform sampling time. It will
+     * count the time elapsed since last call and wait only
+     * the amount remaining to complete the required period
+     */
+    void tick(double seconds);
+
+    /*
+     * Same as above, but also performs update to the joints
+     */
+    void tickUpdate(double seconds);
 
 };
 

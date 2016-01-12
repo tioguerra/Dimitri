@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 250000bps
-  Dimitri robot(0, 7);
+  // to /dev/ttyUSB0
+  Dimitri robot(0, 4);
 
   // Set maximum torque
   robot.setMaxTorque(328);
