@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
   //       like this: robot.setMaxTorque(64);
   robot.getHead()->setMaxTorque(90);
   robot.getWaist()->setMaxTorque(400);
-  robot.getRightArm()->setMaxTorque(460);
-  robot.getLeftArm()->setMaxTorque(460);
+  robot.getRightArm()->setMaxTorque(380);
+  robot.getLeftArm()->setMaxTorque(380);
 
   // Enable torque to the joints
   robot.setControlMode(ANGLE);

@@ -3,6 +3,8 @@
 #include <cstdio>
 
 #define SPRINGVALUEMEMORY 0.7
+#define MINSPRINGANGLE DEG2RAD(-30.0)
+#define MAXSPRINGANGLE DEG2RAD(30.0)
 
 ElasticJoint::ElasticJoint(int jointId, int springId, int jointCenterValue, int springCenterValue)
                                           : Joint(jointId, jointCenterValue)
@@ -54,11 +56,14 @@ void ElasticJoint::readSpringAngle()
     value = dxl_read_word(this->springId, 36);
     if (dxl_get_result() == 1)
     {
-      this->springAngle = (SPRINGVALUEMEMORY)*this->springAngle
+      float angle = (SPRINGVALUEMEMORY)*this->springAngle
                         + (1-SPRINGVALUEMEMORY)*SPRINGVALUE2ANGLE(value - this->springCenterValue);
-      // Stores the resulting torque
-      this->torque = SPRINGANGLE2TORQUE(this->springAngle);
-      quit = true;
+      if (angle >= MINSPRINGANGLE && angle <= MAXSPRINGANGLE)
+      {
+        this->springAngle = angle;      // Stores the resulting torque
+        this->torque = SPRINGANGLE2TORQUE(this->springAngle);
+        quit = true;
+      }
     }
     if (count > 3) quit = true;
     count++;

@@ -12,14 +12,13 @@ Dimitri::Dimitri(int deviceIndex, int baudnum)
   this->rightArm->addJoint(new ElasticJoint(1, 101, 1860, 2646));
   this->rightArm->addJoint(new ElasticJoint(2, 102, 4861-4096, 5770));
   this->rightArm->addJoint(new ElasticJoint(3, 103, 5428-4096, 4480));
-  // 4:6862,104:5316
-  this->rightArm->addJoint(new ElasticJoint(4, 104, 6862-3996, 5316));
+  this->rightArm->addJoint(new ElasticJoint(4, 104, 6600-3996, 5316));
 
   // Builds left arm
   this->leftArm = new JointChain();
   this->leftArm->addJoint(new ElasticJoint(8, 108, 7020-4096, 4238));
   this->leftArm->addJoint(new ElasticJoint(7, 107, 5518-4096, 63098));
-  this->leftArm->addJoint(new ElasticJoint(6, 106, 6665-4096, 59800));
+  this->leftArm->addJoint(new ElasticJoint(6, 106, 6220-4096, 61300));
   this->leftArm->addJoint(new ElasticJoint(5, 105, 5597-4096, 63327));
 
   // Builds head
@@ -353,19 +352,19 @@ void Dimitri::getPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
                  float &wroll, float &wpitch, float &wyaw,
                  float &hpan, float &htilt)
 {
-  lroll = this->leftArm->getJoint(ARMROLL)->getGoalAngle();
-  lpitch = this->leftArm->getJoint(ARMPITCH)->getGoalAngle();
-  lyaw = this->leftArm->getJoint(ARMYAW)->getGoalAngle();
-  lelbow = this->leftArm->getJoint(ELBOW)->getGoalAngle();
-  rroll = this->rightArm->getJoint(ARMROLL)->getGoalAngle();
-  rpitch = this->rightArm->getJoint(ARMPITCH)->getGoalAngle();
-  ryaw = this->rightArm->getJoint(ARMYAW)->getGoalAngle();
-  relbow = this->rightArm->getJoint(ELBOW)->getGoalAngle();
-  wroll = this->waist->getJoint(WAISTROLL)->getGoalAngle();
-  wpitch = this->waist->getJoint(WAISTPITCH)->getGoalAngle();
-  wyaw = this->waist->getJoint(WAISTYAW)->getGoalAngle();
-  hpan = this->head->getJoint(PAN)->getGoalAngle();
-  htilt = this->head->getJoint(TILT)->getGoalAngle();
+  lroll = this->leftArm->getJoint(ARMROLL)->getAngle();
+  lpitch = this->leftArm->getJoint(ARMPITCH)->getAngle();
+  lyaw = this->leftArm->getJoint(ARMYAW)->getAngle();
+  lelbow = this->leftArm->getJoint(ELBOW)->getAngle();
+  rroll = this->rightArm->getJoint(ARMROLL)->getAngle();
+  rpitch = this->rightArm->getJoint(ARMPITCH)->getAngle();
+  ryaw = this->rightArm->getJoint(ARMYAW)->getAngle();
+  relbow = this->rightArm->getJoint(ELBOW)->getAngle();
+  wroll = this->waist->getJoint(WAISTROLL)->getAngle();
+  wpitch = this->waist->getJoint(WAISTPITCH)->getAngle();
+  wyaw = this->waist->getJoint(WAISTYAW)->getAngle();
+  hpan = this->head->getJoint(PAN)->getAngle();
+  htilt = this->head->getJoint(TILT)->getAngle();
 }
 
 void Dimitri::getNormalizedPose(float &lroll, float &lpitch, float &lyaw, float &lelbow,
@@ -373,19 +372,19 @@ void Dimitri::getNormalizedPose(float &lroll, float &lpitch, float &lyaw, float 
                  float &wroll, float &wpitch, float &wyaw,
                  float &hpan, float &htilt)
 {
-  lroll = this->leftArm->getJoint(ARMROLL)->getNormalizedGoalAngle();
-  lpitch = this->leftArm->getJoint(ARMPITCH)->getNormalizedGoalAngle();
-  lyaw = this->leftArm->getJoint(ARMYAW)->getNormalizedGoalAngle();
-  lelbow = this->leftArm->getJoint(ELBOW)->getNormalizedGoalAngle();
-  rroll = this->rightArm->getJoint(ARMROLL)->getNormalizedGoalAngle();
-  rpitch = this->rightArm->getJoint(ARMPITCH)->getNormalizedGoalAngle();
-  ryaw = this->rightArm->getJoint(ARMYAW)->getNormalizedGoalAngle();
-  relbow = this->rightArm->getJoint(ELBOW)->getNormalizedGoalAngle();
-  wroll = this->waist->getJoint(WAISTROLL)->getNormalizedGoalAngle();
-  wpitch = this->waist->getJoint(WAISTPITCH)->getNormalizedGoalAngle();
-  wyaw = this->waist->getJoint(WAISTYAW)->getNormalizedGoalAngle();
-  hpan = this->head->getJoint(PAN)->getNormalizedGoalAngle();
-  htilt = this->head->getJoint(TILT)->getNormalizedGoalAngle();
+  lroll = this->leftArm->getJoint(ARMROLL)->getNormalizedAngle();
+  lpitch = this->leftArm->getJoint(ARMPITCH)->getNormalizedAngle();
+  lyaw = this->leftArm->getJoint(ARMYAW)->getNormalizedAngle();
+  lelbow = this->leftArm->getJoint(ELBOW)->getNormalizedAngle();
+  rroll = this->rightArm->getJoint(ARMROLL)->getNormalizedAngle();
+  rpitch = this->rightArm->getJoint(ARMPITCH)->getNormalizedAngle();
+  ryaw = this->rightArm->getJoint(ARMYAW)->getNormalizedAngle();
+  relbow = this->rightArm->getJoint(ELBOW)->getNormalizedAngle();
+  wroll = this->waist->getJoint(WAISTROLL)->getNormalizedAngle();
+  wpitch = this->waist->getJoint(WAISTPITCH)->getNormalizedAngle();
+  wyaw = this->waist->getJoint(WAISTYAW)->getNormalizedAngle();
+  hpan = this->head->getJoint(PAN)->getNormalizedAngle();
+  htilt = this->head->getJoint(TILT)->getNormalizedAngle();
 }
 
 void Dimitri::delay(double seconds)

@@ -26,10 +26,6 @@ all: lib/libdimitri.a bin/dynamixel_test bin/dynamixel_test_id \
 COLOR = '\033[0;32m'
 NOCOLOR='\033[0m'
 
-#lib/libdxl.a: obj/dxl_hal.o obj/dynamixel.o
-#	@echo -e -n $(COLOR)Linking with\ 
-#	@$(AR) rs $@ $^
-
 lib/libdimitri.a: $(OBJECTS)
 	@echo -e -n $(COLOR)Linking with\ 
 	@$(AR) rs $@ $^
@@ -56,7 +52,7 @@ install:
 	@echo -e $(COLOR)Installing library, binaries and headers at $(INSTALL_PATH) $(NOCOLOR)
 	@cp lib/* $(INSTALL_PATH)/lib
 	@mkdir -p $(INSTALL_PATH)/include/dimitri
-	@cp include/*.h $(INSTALL_PATH)/include
+	@cp include/*.h $(INSTALL_PATH)/include/dimitri
 	@cp bin/* $(INSTALL_PATH)/bin
 
 .PHONY: uninstall

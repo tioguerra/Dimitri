@@ -10,7 +10,8 @@ class Camera
 {
   public:
 
-    Camera();
+    Camera(int device_num);
+    
     ~Camera();
 
     // Adds an object color to be tracked

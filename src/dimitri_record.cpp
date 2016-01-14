@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
   printf(">> Setting up camera...\n");
 
   // Create the camera
-  Camera cam;
+  Camera cam(1);
 
   // Create a red object
   Object obj("green");
@@ -74,8 +74,9 @@ int main(int argc, char *argv[])
 
   // This array stores the goal pose
   float targetPose[13];
-  createPoseDeg(targetPose,-35,40,50,-90, // arms
-                           -35,40,50,-90, //
+  // stance
+  createPoseDeg(targetPose,-60, 70, 20, -90, //arms
+                           -60, 70, 20, -90,
                             0,-25,0,      // waist
                             0,-40);       // head
 
@@ -85,8 +86,10 @@ int main(int argc, char *argv[])
   robot.delay( 2.0 );
 
   // Loose a little of the torque in the arms
-  robot.getRightArm()->setControlMode(OFF);
-  robot.getLeftArm()->setControlMode(OFF);
+  robot.getRightArm()->setMaxTorque(128);
+  robot.getLeftArm()->setMaxTorque(128);
+  //robot.getRightArm()->setControlMode(OFF);
+  //robot.getLeftArm()->setControlMode(OFF);
 
   // This array will store the actual pose
   // angles read from the motors and also
@@ -96,8 +99,20 @@ int main(int argc, char *argv[])
   printf(">> Recording! Hit Ctrl+C to stop.\n");
 
   // Main loop
+  int count = 0;
   while (true)
   {
+
+    if (count == 40)
+    {
+      robot.getRightArm()->setMaxTorque(30);
+      robot.getLeftArm()->setMaxTorque(30);
+    } else if (count == 200) {
+      robot.getRightArm()->setMaxTorque(10);
+      robot.getLeftArm()->setMaxTorque(10);
+      //robot.getRightArm()->setControlMode(OFF);
+      //robot.getLeftArm()->setControlMode(OFF);
+    }
 
     // Process the camera frame
     cam.processFrame();
@@ -127,6 +142,10 @@ int main(int argc, char *argv[])
 
     // Keep sampling time
     robot.tick( 0.070 );
+
+    // Print counter
+    printf("count = %d\n", count);
+    count++;
 
   }
 

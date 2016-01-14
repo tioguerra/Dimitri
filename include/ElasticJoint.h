@@ -25,7 +25,7 @@ class ElasticJoint : public Joint
     float torque;
     float goalTorque;
     PidController *pidController;
-    virtual void readAngle();
+    void readAngle();
     void readSpringAngle();
 
   public:

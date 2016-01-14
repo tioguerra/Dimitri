@@ -137,7 +137,11 @@ void Joint::readMotorAngle()
   int value = dxl_read_word(this->jointId, 36);
   if (dxl_get_result() == 1)
   {
-    this->motorAngle = VALUE2ANGLE(value - this->jointCenterValue);
+    float angle = VALUE2ANGLE(value - this->jointCenterValue);
+    if (angle >= this->minAngle && angle <= this->maxAngle)
+    {
+      this->motorAngle = angle;
+    }
   }
 }
 

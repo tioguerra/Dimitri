@@ -1,6 +1,7 @@
 #ifndef DIMITRI_H
 #define DIMITRI_H
 
+#include "dynamixel.h"
 #include "JointChain.h"
 #include <ctime>
 

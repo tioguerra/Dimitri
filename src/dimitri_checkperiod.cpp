@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the camera object
-  Camera cam;
+  Camera cam(0);
 
   // Create a red object
   Object obj("green");

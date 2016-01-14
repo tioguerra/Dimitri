@@ -12,9 +12,9 @@ using namespace cv;
 #define CAMERA_HORIZONTAL_FIELD (DEG2RAD(45.0))
 #define CAMERA_VERTICAL_FIELD (DEG2RAD(30.0))
 
-Camera::Camera()
+Camera::Camera(int device_num)
 {
-  this->capture.open(0);
+  this->capture.open(device_num);
   this->capture.set(CV_CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH);
   this->capture.set(CV_CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT);
   this->focusObjIndex = 0;
