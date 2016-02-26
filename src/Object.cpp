@@ -72,6 +72,18 @@ Object::Object(string name){
 		setColor(Scalar(0,0,255));
 
 	}
+	if(name=="orange"){
+
+		//TODO: use "calibration mode" to find HSV min
+		//and HSV max values
+
+		setHSVmin(Scalar(0,159,0));
+		setHSVmax(Scalar(45,255,255));
+
+		//BGR value for Red:
+		setColor(Scalar(0,0,255));
+
+	}
 }
 
 Object::~Object(void)

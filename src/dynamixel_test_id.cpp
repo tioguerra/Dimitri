@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Initialize the communication with the
-  // Dynamixel network bus at 250000bps
-  if (dxl_initialize(0,7) == 0)
+  // Dynamixel network bus
+  if (dxl_initialize(0,4) == 0)
   {
     printf( "Failed to open USB2Dynamixel!\n" );
     return -1;

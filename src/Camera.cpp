@@ -20,6 +20,8 @@ Camera::Camera(int device_num)
   this->focusObjIndex = 0;
   this->focusStepDiv = 5.0;
   this->head = NULL;
+  this->focusPan = 0.0;
+  this->focusTilt = 0.0;
   waitKey(1000);
 }
 
@@ -155,8 +157,8 @@ void Camera::processFrame()
                         this->HSVImage, this->cameraImage);
     if (this->head != NULL && i == this->focusObjIndex)
     {
-      Joint *pan = head->getJoint(PAN);
-      Joint *tilt = head->getJoint(TILT);
+      Joint *pan = head->getJoint(HEADPAN);
+      Joint *tilt = head->getJoint(HEADTILT);
       float x = this->objectsToTrack[i]->getXPos();
       float y = this->objectsToTrack[i]->getYPos();
       float half_width = float(CAMERA_WIDTH) / 2.0;
@@ -172,8 +174,8 @@ void Camera::processFrame()
 
 void Camera::moveHeadToFocus()
 {
-      Joint *pan = head->getJoint(PAN);
-      Joint *tilt = head->getJoint(TILT);
+      Joint *pan = head->getJoint(HEADPAN);
+      Joint *tilt = head->getJoint(HEADTILT);
       float deltaPan = this->focusPan - pan->getAngle();
       float deltaTilt = this->focusTilt - tilt->getAngle();
       deltaPan /= this->focusStepDiv*3.0/5.0;
@@ -184,11 +186,11 @@ void Camera::moveHeadToFocus()
 
 float Camera::getNormalizedFocusPan()
 {
-  return this->head->getJoint(PAN)->normalizeAngle(this->focusPan);
+  return this->head->getJoint(HEADPAN)->normalizeAngle(this->focusPan);
 }
 
 float Camera::getNormalizedFocusTilt()
 {
-  return this->head->getJoint(TILT)->normalizeAngle(this->focusTilt);
+  return this->head->getJoint(HEADTILT)->normalizeAngle(this->focusTilt);
 }
 

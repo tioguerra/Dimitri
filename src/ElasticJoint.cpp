@@ -2,7 +2,7 @@
 #include "dynamixel.h"
 #include <cstdio>
 
-#define SPRINGVALUEMEMORY 0.7
+#define SPRINGVALUEMEMORY 0.8
 #define MINSPRINGANGLE DEG2RAD(-30.0)
 #define MAXSPRINGANGLE DEG2RAD(30.0)
 
@@ -13,6 +13,7 @@ ElasticJoint::ElasticJoint(int jointId, int springId, int jointCenterValue, int 
   this->springId = springId;
   this->pidController = new PidController(KP, KI, KD);
   this->springCenterValue = springCenterValue;
+  this->springAngle = 0.0;
 }
 
 ElasticJoint::~ElasticJoint()
@@ -25,9 +26,17 @@ void ElasticJoint::readAngle()
 
   // Read current motor angle
   int value = dxl_read_word(this->jointId, 36);
+  //printf("%d:%d\n",this->jointId,value);
   if (dxl_get_result() == 1)
   {
     this->motorAngle = VALUE2ANGLE(value - this->jointCenterValue);
+  } else {
+    printf("Error reading angle of jointId %d\n", this->jointId);
+  }
+
+  if (this->jointId == 8)
+  {
+    value = dxl_read_word(36, 36);
   }
 
   // Read the current angle of the spring
@@ -42,32 +51,28 @@ void ElasticJoint::readAngle()
 void ElasticJoint::readSpringAngle()
 {
 
-  bool quit = false;
-  int count = 1;
+  //bool quit = false;
+  //int count = 1;
   int value;
 
-  if (this->springId == 103)
-  {
-    count = -2;
-  }
-
-  do
-  {
+  //do
+  //{
     value = dxl_read_word(this->springId, 36);
+    //printf("%d:%d\n",this->springId,value);
     if (dxl_get_result() == 1)
     {
       float angle = (SPRINGVALUEMEMORY)*this->springAngle
                         + (1-SPRINGVALUEMEMORY)*SPRINGVALUE2ANGLE(value - this->springCenterValue);
-      if (angle >= MINSPRINGANGLE && angle <= MAXSPRINGANGLE)
-      {
+      //if (angle >= MINSPRINGANGLE && angle <= MAXSPRINGANGLE)
+      //{
         this->springAngle = angle;      // Stores the resulting torque
         this->torque = SPRINGANGLE2TORQUE(this->springAngle);
-        quit = true;
-      }
+      //  quit = true;
+      //}
     }
-    if (count > 3) quit = true;
-    count++;
-  } while (!quit);
+  //  if (count > 3) quit = true;
+  //  count++;
+  //} while (!quit);
 
 }
 
@@ -83,7 +88,14 @@ void ElasticJoint::update()
     case ANGLE:
       {
         // Write the goal angle to the motor
-        this->writeGoalAngle(this->goalAngle - this->springAngle);
+        float c = this->pidController->update(this->angle, this->goalAngle);
+        if (this->jointId == 3 || this->jointId == 6)
+        {
+          //printf("%f ; ",c);
+          this->writeGoalAngle(this->angle - this->springAngle + c);
+        } else {
+          this->writeGoalAngle(this->goalAngle - this->springAngle);
+        }
       }
       break;
     case TEACH:

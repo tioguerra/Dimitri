@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
   signal(SIGINT, signal_callback_handler);
 
   // Create the Dimitri robot object connected
-  // to /dev/ttyUSB0 with 250000bps
+  // to /dev/ttyUSB0
   Dimitri robot(0, 4);
 
   // Sets maximum torque to the joints
@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
   //       like this: robot.setMaxTorque(64);
   robot.getHead()->setMaxTorque(64);
   robot.getWaist()->setMaxTorque(384);
-  robot.getRightArm()->setMaxTorque(384);
-  robot.getLeftArm()->setMaxTorque(384);
+  robot.getRightArm()->setMaxTorque(500);
+  robot.getLeftArm()->setMaxTorque(500);
 
   // Enable torque to the joints
   robot.setControlMode(ANGLE);

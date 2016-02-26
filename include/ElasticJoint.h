@@ -4,9 +4,9 @@
 #include "Joint.h"
 #include "PidController.h"
 
-#define KP 32
-#define KI 0
-#define KD 0
+#define KP 0.15
+#define KI 0.01
+#define KD 1.2
 
 #define SPRING_CONSTANT 1.0
 #define SPRINGANGLE2VALUE(x) ((x)*4096.0/M_PI)

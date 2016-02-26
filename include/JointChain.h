@@ -20,8 +20,8 @@ typedef enum {
 } WaistJoints;
 
 typedef enum {
-    TILT,
-    PAN,
+    HEADTILT,
+    HEADPAN,
 } HeadJoints;
 
 class JointChain

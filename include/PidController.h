@@ -6,7 +6,7 @@ class PidController
   private:
     float sum;
     float difference;
-    float last_reading;
+    float last_error;
 
   public:
 

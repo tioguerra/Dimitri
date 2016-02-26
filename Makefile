@@ -2,12 +2,12 @@ CC = gcc
 CXX = g++
 CFLAGS = -I./include -I/usr/include -Wall -O2
 CXXFLAGS = -I./include -I/usr/include -I/usr/include/opencv `pkg-config --cflags opencv` -Wall -O2
-LDFLAGS = -L./lib -lm -ldimitri `pkg-config --libs opencv`
+LDFLAGS = -L./lib -lm -ldimitri -lflycapture `pkg-config --libs opencv`
 AR = ar
 OBJECTS = obj/Dimitri.o obj/Joint.o obj/ElasticJoint.o \
 	  obj/JointChain.o obj/Util.o obj/PidController.o \
 	  obj/dynamixel.o obj/dxl_hal.o obj/Object.o \
-	  obj/Camera.o
+	  obj/Camera.o obj/FireFlyCam.o
 RM = echo "hello"
 INSTALL_PATH = /usr/local
 
@@ -20,7 +20,7 @@ all: lib/libdimitri.a bin/dynamixel_test bin/dynamixel_test_id \
   bin/dimitri_off bin/dimitri_on \
   bin/dimitri_teach bin/dimitri_poses \
   bin/camera_test bin/dimitri_vision bin/dimitri_record \
-  bin/dimitri_checkperiod
+  bin/dimitri_checkperiod bin/fireflycam_test bin/dimitri_fireflyvis
 	@echo $(COLOR)All done! $(NOCOLOR)
 
 COLOR = '\033[0;32m'

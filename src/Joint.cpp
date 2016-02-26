@@ -135,12 +135,15 @@ void Joint::readMotorAngle()
 {
   // Read the motor angle from the motor
   int value = dxl_read_word(this->jointId, 36);
+  //printf("%d:%d\n",this->jointId,value);
   if (dxl_get_result() == 1)
   {
     float angle = VALUE2ANGLE(value - this->jointCenterValue);
-    if (angle >= this->minAngle && angle <= this->maxAngle)
+    if (true) //angle >= this->minAngle && angle <= this->maxAngle)
     {
       this->motorAngle = angle;
+    } else {
+      printf("Angle out of range!\n");
     }
   }
 }

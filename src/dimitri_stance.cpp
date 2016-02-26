@@ -22,12 +22,13 @@ int main(int argc, char *argv[])
   Dimitri robot(0, 4);
 
   // Sets maximum torque to the joints
+  //
   // P.S.: optionally can set for all motors
   //       like this: robot.setMaxTorque(64);
   robot.getHead()->setMaxTorque(64);
   robot.getWaist()->setMaxTorque(384);
-  robot.getRightArm()->setMaxTorque(384);
-  robot.getLeftArm()->setMaxTorque(384);
+  robot.getRightArm()->setMaxTorque(1024);
+  robot.getLeftArm()->setMaxTorque(1024);
 
   // Enable torque to the joints
   robot.setControlMode(ANGLE);

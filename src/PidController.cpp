@@ -16,7 +16,7 @@ void PidController::reset()
 {
   this->sum = 0.0;
   this->difference = 0.0;
-  this->last_reading = 0.0;
+  this->last_error = 0.0;
 }
 
 float PidController::update(float reading, float goal)
@@ -32,8 +32,8 @@ float PidController::update(float reading, float goal)
   float i = this->iGain * this->sum;
 
   // Differential term
-  this->difference = reading - this->last_reading;
-  this->last_reading = reading;
+  this->difference = error - this->last_error;
+  this->last_error = error;
   float d = this->dGain * this->difference;
 
   return p + i + d;
